@@ -45,7 +45,7 @@ def _configure_widgets() -> None:
         ptg.Button.styles.label = "myapp.button.label"
         ptg.Container.styles.border__corner = "myapp.border"
     """
-
+    ptg.Container.styles.border__corner = "myapp.border"
     ptg.boxes.SINGLE.set_chars_of(ptg.Window)
 
 
@@ -55,7 +55,7 @@ def _define_layout() -> ptg.Layout:
     Layouts work based on "slots" within them. Each slot can be given dimensions for
     both width and height. Integer values are interpreted to mean a static width, float
     values will be used to "scale" the relevant terminal dimension, and giving nothing
-    will allow PTG to calculate the corrent dimension.
+    will allow PTG to calculate the correct dimension.
     """
 
     layout = ptg.Layout()
@@ -65,16 +65,18 @@ def _define_layout() -> ptg.Layout:
     layout.add_break()
 
     # A body slot that will fill the entire width, and the height is remaining
-    layout.add_slot("Body")
+    layout.add_slot("Body", width=0.2)
 
     # A slot in the same row as body, using the full non-occupied height and
     # 20% of the terminal's height.
-    layout.add_slot("Body right", width=0.2)
+    layout.add_slot("Body right")
 
     layout.add_break()
-
-    # A footer with a static height of 1
+    layout.add_slot("Second Row")
+    layout.add_break()
+# A footer with a static height of 1
     layout.add_slot("Footer", height=1)
+
 
     return layout
 
@@ -91,7 +93,7 @@ def main(argv: list[str] | None = None) -> None:
         manager.layout = _define_layout()
 
         header = ptg.Window(
-            "[app.header] Welcome to PyTermGUI ",
+            "Beef Terminal Project",
             box="EMPTY",
         )
 
@@ -104,8 +106,9 @@ def main(argv: list[str] | None = None) -> None:
         # to "footer"
         manager.add(footer, assign="footer")
 
-        manager.add(ptg.Window("My sidebar"), assign="body_right")
-        manager.add(ptg.Window("My body window"), assign="body")
+        manager.add(ptg.Window("Main Window"), assign="body_right")
+        manager.add(ptg.Window("Sidebar"), assign="body")
+        manager.add(ptg.Window("Second Row"), assign="second_row")
 
     ptg.tim.print("[!gradient(210)]Goodbye!")
 
