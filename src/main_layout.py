@@ -1,5 +1,7 @@
 from rich.console import Console
 from rich.layout import Layout
+from rich.live import Live
+from time import sleep
 
 console = Console()
 layout = Layout()
@@ -15,3 +17,7 @@ layout["main"].split_row(Layout(name='side'),
 layout["side"].split(Layout(), Layout())
 
 console.print(layout)
+
+with Live(layout, screen=True):
+    while True:
+        sleep(1)
